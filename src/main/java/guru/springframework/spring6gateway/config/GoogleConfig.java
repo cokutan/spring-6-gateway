@@ -11,6 +11,13 @@ import org.springframework.context.annotation.Profile;
 public class GoogleConfig {
   @Bean
   public RouteLocator googleRouteConfig(RouteLocatorBuilder builder) {
-    return builder.routes().route(r -> r.path("google","/googlesearch2").uri("https://www.google.com")).build();
+    return builder
+        .routes()
+        .route(
+            r ->
+                r.path("google", "/googlesearch2")
+                    .filters(f -> f.rewritePath("/googlesearch2(?<segment>/?.*)", "/${segment}"))
+                    .uri("https://www.google.com"))
+        .build();
   }
 }
